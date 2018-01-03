@@ -1,0 +1,20 @@
+Public Class FrmAssignment1
+    Private Sub btnUpdateVerse_Click(sender As Object, e As EventArgs) Handles btnUpdateVerse.Click
+        txtVerse.Text = "Trust in the Lord with all thine heart; and lean not unto thine own understanding. Prov 3:5 (KJV)"
+    End Sub
+
+
+    Private Sub btnVerify_Click(sender As Object, e As EventArgs) Handles btnVerify.Click
+        lblVerify.Visible = True
+    End Sub
+
+    Private Sub btnUpdateFont_Click(sender As Object, e As EventArgs) Handles btnUpdateFont.Click
+        Me.BackColor = Color.White
+        txtVerse.BackColor = Color.Blue
+        txtVerse.ForeColor = Color.Red
+    End Sub
+
+    Private Sub FrmAssignment1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+End Class
