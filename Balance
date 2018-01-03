@@ -1,0 +1,46 @@
+Public Class frmRegister
+
+    Dim calc As New CashRegister  'Calling the other class
+
+    Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        'adding to the balance
+        Dim amount As Integer = txtAmount.Text
+
+        calc.add(amount)
+
+        txtBalance.Text = FormatCurrency(calc.balance())
+    End Sub
+
+    Private Sub btnSubtract_Click(sender As Object, e As EventArgs) Handles btnSubtract.Click
+        'subtracting from the balance
+        Dim amount As Integer = txtAmount.Text
+        calc.subtract(amount)
+
+
+        txtBalance.Text = FormatCurrency(calc.balance())
+    End Sub
+End Class
+
+Class CashRegister
+    Private m_balance As Decimal
+
+    Public Property balance() As Integer
+        Get
+            Return m_balance
+        End Get
+        Set(value As Integer)
+            m_balance = value
+        End Set
+    End Property
+    Sub add(ByVal amount As Double)
+        m_balance = m_balance + amount
+    End Sub
+    Sub subtract(ByVal amount As Double)
+        'an error message if balance is in the negatives
+        If amount > m_balance Then
+            MessageBox.Show("This transaction will result in a negative balance")
+            Return
+        End If
+        m_balance = m_balance - amount
+    End Sub
+End Class
