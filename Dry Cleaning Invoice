@@ -1,0 +1,111 @@
+Public Class frmDryCleaningInvoice
+    Private Sub btnProcessOrder_Click(sender As Object, e As EventArgs) Handles btnProcessOrder.Click
+        'Variables
+
+        'customer information
+        Dim fullName, firstname, lastname As String
+        Dim n As Integer
+        fullName = txtCustomerName.Text
+
+        Dim address As String
+        address = txtAddress.Text
+
+        Dim City, Zip As String
+        Dim l As Integer
+        City = txtCityStateZip.Text
+        l = City.IndexOf(",")
+        Zip = City.Substring(l + 7)
+
+        Dim inumber As String
+        inumber = firstname.Substring(1, 1) + lastname.Substring(0, 1) + Zip
+
+        'Dim txtMessageBox As String
+
+        Dim prompt, title, deliverydate As String
+        prompt = "Enter the number of days of delivery."
+        title = "Delivery Date"
+        deliverydate = InputBox(prompt, title)
+
+        'Delivery loop
+        Dim DisplayDate As Date
+
+        For i As Integer = 1 To deliverydate
+
+            lstDisplay.Items.Add(deliverydate + 1)
+            i += 8
+        Next
+        'Dim i As Integer
+        'i = deliverydate
+        'DisplayDate = today()
+        'Do While i <= 8
+        'i += (DisplayDate + 1)
+        'Loop
+        'lstDisplay.Items.Add("Delivery 1" & i)
+
+
+        'items variables
+        Dim Numberofcomforters As Integer
+        Dim comforterprice As Integer
+        comforterprice = 40
+        Numberofcomforters = CInt(txtNumOfComforters.Text)
+
+        Dim Numberofshirts As Decimal
+        Dim shirtprice As Decimal
+        shirtprice = 1.5
+        Numberofshirts = CDec(txtNumOfShirts.Text)
+
+        Dim Numberofpants As Integer
+        Dim pantsprice As Integer
+        pantsprice = 3
+        Numberofpants = CInt(txtNumOfPants.Text)
+
+        'Calculate
+        Dim tax As Decimal
+        tax = 0.05
+
+        Dim cost As Decimal
+        cost = (Numberofcomforters * comforterprice) + (Numberofshirts * shirtprice) + (Numberofpants * pantsprice)
+
+        Dim salestax As Decimal
+        salestax = cost * tax
+
+        Dim totalcost As Decimal
+        totalcost = (Numberofcomforters * comforterprice) + (Numberofshirts * shirtprice) + (Numberofpants * pantsprice) + salestax
+
+        'Display
+        lstDisplay.Items.Clear()
+        lstDisplay.Items.Add("Employee Name:" & vbTab & vbTab & "LISA TIDBALL")
+        lstDisplay.Items.Add("Manager Name:" & vbTab & vbTab & "Miranda Dyer")
+        lstDisplay.Items.Add("Invoice Number:" & vbTab & vbTab & inumber)
+        lstDisplay.Items.Add("")
+        lstDisplay.Items.Add("Name:" & vbTab & vbTab & vbTab & firstname & lastname)
+        lstDisplay.Items.Add("Address:" & vbTab & vbTab & vbTab & address)
+        lstDisplay.Items.Add("City:" & vbTab & vbTab & vbTab & City)
+        lstDisplay.Items.Add("")
+        'lstDisplay.Items.Add(Delivery)
+        lstDisplay.Items.Add("")
+        lstDisplay.Items.Add("Number of Comforters:" & vbTab & Numberofcomforters)
+        lstDisplay.Items.Add("Number of Shirts:" & vbTab & vbTab & Numberofshirts)
+        lstDisplay.Items.Add("Number of Pants:" & vbTab & vbTab & Numberofpants)
+        lstDisplay.Items.Add("")
+        lstDisplay.Items.Add("Cost:" & vbTab & vbTab & vbTab & FormatCurrency(cost))
+        lstDisplay.Items.Add("Sales Tax:" & vbTab & vbTab & FormatCurrency(salestax))
+        lstDisplay.Items.Add(vbTab & vbTab & vbTab & "----------------------")
+        lstDisplay.Items.Add("Total Cost:" & vbTab & vbTab & FormatCurrency(totalcost))
+    End Sub
+
+    Function lastname(name As String) As String
+        n = fullName.Indexof(",")
+        Return lastname = fullName.Substring(0, n)
+        Return firstname = fullName.Substring(n + 1)
+
+    End Function
+
+    Private Sub btnClearOrderForm_Click(sender As Object, e As EventArgs) Handles btnClearOrderForm.Click
+        lstDisplay.Items.Clear()
+    End Sub
+
+    Private Sub btnQuit_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
+        Me.Close()
+    End Sub
+End Class
