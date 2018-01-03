@@ -1,0 +1,63 @@
+Public Class frmMicro
+    Private Sub frmMicro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'TODO: This line of code loads data into the 'MICROLANDDataSet1.Orders' table. You can move, or remove it, as needed.
+        Me.OrdersTableAdapter2.Fill(Me.MICROLANDDataSet1.Orders)
+        'TODO: This line of code loads data into the 'MICROLANDDataSet1.Customers' table. You can move, or remove it, as needed.
+        Me.CustomersTableAdapter2.Fill(Me.MICROLANDDataSet1.Customers)
+        'TODO: This line of code loads data into the 'Microland.Orders' table. You can move, or remove it, as needed.
+        Me.OrdersTableAdapter1.Fill(Me.Microland.Orders)
+        'TODO: This line of code loads data into the 'Microland.Customers' table. You can move, or remove it, as needed.
+        Me.CustomersTableAdapter1.Fill(Me.Microland.Customers)
+
+        'What loads when the user clicks on the form
+        Dim query = From custname In MICROLANDDataSet1.Customers
+                    Order By custname.name Descending
+                    Select custname.name
+
+        lstDisplay.DataSource = query.ToList
+    End Sub
+
+    Private Sub btnDisplay_Click(sender As Object, e As EventArgs) Handles btnDisplay.Click
+        'What happens when user clicks the display button
+
+        Dim query2 = From custname In MICROLANDDataSet1.Customers
+                     Select custname.amtPurchases
+        MessageBox.Show(query2.Sum(FormatCurrency))
+    End Sub
+
+    Private Sub lstDisplay_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstDisplay.SelectedIndexChanged
+        'what is displayed on the textboxes and the list box
+        Dim query = From custname In MICROLANDDataSet1.Customers
+                    Where custname.name = lstDisplay.SelectedItem
+                    Select custname.name, custname.street, custname.city, custname.amtPurchases
+        txtName.Text = query.First.name
+        txtAddress.Text = query.First.street
+        txtCity.Text = query.First.city
+        txtPurchases.Text = query.First.amtPurchases(FormatCurrency)
+
+        'what the grey box displays
+        Dim query3 = From person In MICROLANDDataSet1.Customers
+                     Join shipments In MICROLANDDataSet1.Orders
+                         On person.custID Equals shipments.custID
+                     Where person.name = lstDisplay.Text
+                     Select person.name, person.street, person.city, person.amtPurchases, person.custID, shipments.itemID, shipments.quantity
+
+        dgvOutput.DataSource = query3.tolist()
+    End Sub
+
+    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
+        'what happens when the user clicks the close button/closes the whole form
+        Me.Close()
+    End Sub
+
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        'what happens when the user clicks the clear button/clears the text boxes
+        txtName.Clear()
+        txtAddress.Clear()
+        txtCity.Clear()
+        txtPurchases.Clear()
+
+    End Sub
+
+
+End Class
