@@ -1,0 +1,154 @@
+Public Class frmMissions
+    Sub RefreshSub()
+        lstMissionariesAvailable.Items.Clear()
+        lstMissionariesInField.Items.Clear()
+
+
+        'A loop for the names.txt file
+        Dim Query1 = From name1 In IO.File.ReadAllLines("Names.txt")
+                     Order By name1
+                     Select name1
+
+        For Each name1 In Query1
+            lstMissionariesAvailable.Items.Add(name1)
+
+        Next
+
+
+        txtNumAvailable.Text = lstMissionariesAvailable.Items.Count
+
+        'a loop for the missions.txt file
+        Dim Query2 = From missions2 In IO.File.ReadAllLines("Missions.txt")
+                     Order By missions2
+                     Select missions2
+
+        For Each missions2 In Query2
+            lstMissionariesInField.Items.Add(missions2)
+        Next
+
+        txtNumInField.Text = lstMissionariesInField.Items.Count
+
+    End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'RefreshSub() 'this is also producing an error. Is this correct or did i completely miss something?
+        If Not IO.File.Exists("Names.txt") Then
+            Dim sw As IO.StreamWriter = IO.File.CreateText("Names.txt")
+            sw.WriteLine("Miranda Dyer")
+            sw.WriteLine("Lisa Tidball")
+            sw.WriteLine("Cameran Nikitina")
+            sw.WriteLine("Christopher Elder")
+            sw.WriteLine("Jason Smith")
+            sw.WriteLine("Johnathan Griffith")
+            sw.WriteLine("Kaila Hawkins")
+            sw.Close()
+        End If
+
+        'Creation of missions.txt used for Missionaries in field list
+        If Not IO.File.Exists("Missions.txt") Then
+            Dim sw As IO.StreamWriter = IO.File.CreateText("Missions.txt")
+            sw.WriteLine("Kathy Poyer")
+            sw.WriteLine("Kevin Graham")
+            sw.WriteLine("Shakera Grady")
+            sw.WriteLine("Shelby Cofer")
+            sw.WriteLine("Ethan Shutika")
+            sw.Close()
+
+        End If
+        RefreshSub()
+    End Sub
+
+
+
+    Private Sub btnQuit_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
+        Me.Close()
+    End Sub
+
+    Private Sub btnAddMissionary_Click(sender As Object, e As EventArgs) Handles btnAddMissionary.Click
+
+        Dim person As String = lstMissionariesAvailable.SelectedItem
+        Dim sw As IO.StreamWriter = IO.File.AppendText("Names.txt")
+        Dim prompt, title As String
+        prompt = "Enter new missionary name"
+        title = "New Missionary"
+        person = InputBox(prompt, title)
+        sw.WriteLine(person)
+        sw.Close()
+
+        RefreshSub()
+    End Sub
+
+    Private Sub btnSort_Click(sender As Object, e As EventArgs) Handles btnSort.Click
+        Dim Query1 = From name1 In IO.File.ReadAllLines("Names.txt")
+                     Order By name1 Descending
+                     Select name1
+
+        lstMissionariesAvailable.Items.Clear()
+        For Each name1 In Query1
+            lstMissionariesAvailable.Items.Add(name1)
+
+        Next
+
+        Dim Query2 = From missions2 In IO.File.ReadAllLines("Missions.txt")
+                     Order By missions2 Descending
+                     Select missions2
+
+        lstMissionariesInField.Items.Clear()
+        For Each missions2 In Query2
+            lstMissionariesInField.Items.Add(missions2)
+        Next
+
+
+    End Sub
+
+    Private Sub btnDeleteMissionary_Click(sender As Object, e As EventArgs) Handles btnDeleteMissionary.Click
+
+        Dim deletename As String = lstMissionariesAvailable.SelectedItem
+
+        'IO.File.ReadAllLines("Names.txt") = deletename
+        Dim query1 = From name1 In IO.File.ReadAllLines("Names.txt")
+                     Where name1 <> deletename
+                     Select name1
+
+        IO.File.WriteAllLines("Names.txt", query1)
+
+        RefreshSub()
+
+
+    End Sub
+
+    Private Sub btnGoToField_Click(sender As Object, e As EventArgs) Handles btnGoToField.Click
+
+        Dim person As String = lstMissionariesAvailable.SelectedItem
+        Dim sw As IO.StreamWriter = IO.File.AppendText("Missions.txt")
+
+        sw.WriteLine(person)
+        sw.Close()
+
+
+        Dim query1 = From name In IO.File.ReadAllLines("Names.txt")
+                     Where name <> person
+                     Select name
+
+        IO.File.WriteAllLines("Names.txt", query1)
+
+        RefreshSub()
+
+    End Sub
+
+    Private Sub btnLeavingField_Click(sender As Object, e As EventArgs) Handles btnLeavingField.Click
+        Dim person As String = lstMissionariesInField.SelectedItem
+        Dim sw As IO.StreamWriter = IO.File.AppendText("Names.txt")
+
+        sw.WriteLine(person)
+        sw.Close()
+
+        Dim query1 = From name In IO.File.ReadAllLines("Missions.txt")
+                     Where name <> person
+                     Select name
+
+        IO.File.WriteAllLines("Missions.txt", query1)
+
+        RefreshSub()
+    End Sub
+End Class
