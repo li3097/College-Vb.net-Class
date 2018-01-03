@@ -1,0 +1,89 @@
+Public Class FrmMission
+    Const FEE As Integer = 250
+    Private Sub btnCalculate_Click(sender As Object, e As EventArgs) Handles btnCalculate.Click
+        Dim GroupName As String
+        'Dim NumberOfTravelers As Integer
+        'Dim DaysOfTravel As Double
+        'Dim chkinsurance As Integer
+        Dim countries As String
+        Dim price As Decimal
+
+        'ERROR CHECKING
+        If txtDaysofTravel.Text = "" Then
+            MessageBox.Show("Please enter the days of travel")
+            Return
+        End If
+        If txtGroupName1.Text = "" Then
+            MessageBox.Show("Please enter the group name")
+            Return
+        End If
+
+        If txtNumberofTravelers.Text = "" Then
+            MessageBox.Show("Please enter the number of travelers")
+            Return
+        End If
+
+        If lstLocation.SelectedIndex = -1 Then
+            MessageBox.Show("Please enter the location")
+            Return
+        End If
+
+        ''ASSIGN VARIABLES
+        'COUNTRY
+        'DAILYCOST
+        'NUM TRAV
+        'DAYS
+        'GROUP NAME
+        countries = lstLocation.SelectedItem
+        Select Case countries
+            Case "Africa"
+                price = 500
+            Case "United States"
+                price = 100
+            Case "Haiti"
+                price = 400
+            Case "Mexico"
+                price = 200
+            Case Else
+                price = 0
+        End Select
+
+        'Assign Variables
+        GroupName = txtGroupName1.Text.ToUpper
+        Dim NumberOfPeople As Decimal
+        NumberOfPeople = CDec(txtNumberofTravelers.Text)
+
+        Dim NumberOfTravelDays As Decimal
+        NumberOfTravelDays = CDec(txtDaysofTravel.Text)
+
+        Dim insuranceprice As Integer
+
+        If chkinsurance.Checked Then
+            insuranceprice = 300
+        Else insuranceprice = 0
+        End If
+
+        'Calculate
+        Dim totalcost As Decimal
+        'The total cost = number of people * dailycost * num of days + insurance + fee
+        totalcost = ((NumberOfPeople * price * NumberOfTravelDays) + insuranceprice + FEE)
+
+        'Display
+
+        'clear the listbox
+        lstDisplay.Items.Clear()
+        lstDisplay.Items.Add("Mission Coordinator:" & vbTab & "Miranda Dyer")
+        lstDisplay.Items.Add("Mission Guide:" & vbTab & vbTab & "Lisa Tidball")
+        lstDisplay.Items.Add("GroupName:" & vbTab & vbTab & GroupName)
+        lstDisplay.Items.Add("Mission Location:" & vbTab & vbTab & countries)
+        lstDisplay.Items.Add(item:="Number of Travelers:" & vbTab & NumberOfPeople)
+        lstDisplay.Items.Add("Daily Cost:" & vbTab & vbTab & FormatCurrency(price))
+        lstDisplay.Items.Add("Number of Days:" & vbTab & vbTab & NumberOfTravelDays)
+        lstDisplay.Items.Add("Insurance Fee:" & vbTab & vbTab & FormatCurrency(insuranceprice))
+        lstDisplay.Items.Add("Total Cost of Mission Trip:" & vbTab & FormatCurrency(totalcost))
+
+
+    End Sub
+
+
+End Class
